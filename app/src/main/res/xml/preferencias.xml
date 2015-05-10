@@ -18,4 +18,23 @@
         android:entries="@array/tiposOrden"
         android:entryValues="@array/tiposOrdenValores"
         android:defaultValue="1"/>
+    <ListPreference android:title="Notificaciones por correo" >
+        <CheckBoxPreference
+            android:key="recibircorreos"
+            android:title="Recibir correos"
+            android:summary="Indicar si se quiere recibir correo"/>
+        <EditTextPreference
+            android:key="direccioncorreo"
+            android:title="Dirección de correo"
+            android:summary="Dirección de correo"
+            android:defaultValue=""/>
+        <ListPreference
+            android:key="tiponotificaciones"
+            android:title="Tipos de notificaciones"
+            android:summary="Tipos de notificaciones a recibir"
+            android:entries="@array/tiposNotificaciones"
+            android:entryValues="@array/tiposNotificacionesValores"
+            android:defaultValue="0"/>
+    </ListPreference>
+
 </PreferenceScreen>
