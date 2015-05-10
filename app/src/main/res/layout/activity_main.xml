@@ -24,6 +24,7 @@
     <Button android:id="@+id/Button02"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:onClick="lanzarPreferencias"
         android:text="@string/accion_preferencias"/>
 
     <Button android:id="@+id/Button03"
