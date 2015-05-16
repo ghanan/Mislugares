@@ -18,7 +18,7 @@
         android:entries="@array/tiposOrden"
         android:entryValues="@array/tiposOrdenValores"
         android:defaultValue="1"/>
-    <ListPreference android:title="Notificaciones por correo" >
+    <PreferenceScreen android:title="NOTIFICACIONES POR CORREO" >
         <CheckBoxPreference
             android:key="recibircorreos"
             android:title="Recibir correos"
@@ -35,6 +35,6 @@
             android:entries="@array/tiposNotificaciones"
             android:entryValues="@array/tiposNotificacionesValores"
             android:defaultValue="0"/>
-    </ListPreference>
+    </PreferenceScreen>
 
 </PreferenceScreen>
