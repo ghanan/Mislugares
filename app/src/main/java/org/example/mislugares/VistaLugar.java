@@ -1,6 +1,9 @@
 package org.example.mislugares;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -89,8 +92,16 @@ public class VistaLugar extends AppCompatActivity {
             case R.id.accion_editar:
                 return true;
             case R.id.accion_borrar:
-                Lugares.borrar((int) id);
-                finish();
+                new AlertDialog.Builder(this)
+                        .setTitle("Borrado de lugar")
+                        .setMessage("¿Está seguro de que quiere borrar este lugar?")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                Lugares.borrar((int) id);
+                                finish();
+                            }})
+                        .setNegativeButton("Cancelar", null)
+                        .show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
