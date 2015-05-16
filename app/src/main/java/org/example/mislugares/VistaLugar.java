@@ -2,6 +2,7 @@ package org.example.mislugares;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -34,14 +35,22 @@ public class VistaLugar extends Activity {
         TextView direccion = (TextView) findViewById(R.id.direccion);
         direccion.setText(lugar.getDireccion());
 
-        TextView telefono = (TextView) findViewById(R.id.telefono);
-        telefono.setText(Integer.toString(lugar.getTelefono()));
+        if (lugar.getTelefono() == 0) {
+            findViewById(R.id.telefono).setVisibility(View.GONE);
+        } else {
+            TextView telefono = (TextView) findViewById(R.id.telefono);
+            telefono.setText(Integer.toString(lugar.getTelefono()));
+        }
 
         TextView url = (TextView) findViewById(R.id.url);
         url.setText(lugar.getUrl());
 
-        TextView comentario = (TextView) findViewById(R.id.comentario);
-        comentario.setText(lugar.getComentario());
+        if (lugar.getComentario().contentEquals("")) {
+            findViewById(R.id.comentario).setVisibility(View.GONE);
+        } else {
+            TextView comentario = (TextView) findViewById(R.id.comentario);
+            comentario.setText(lugar.getComentario());
+        }
 
         TextView fecha = (TextView) findViewById(R.id.fecha);
         fecha.setText(DateFormat.getDateInstance().format(new Date(lugar.getFecha())));
@@ -53,7 +62,8 @@ public class VistaLugar extends Activity {
         valoracion.setRating(lugar.getValoracion());
         valoracion.setOnRatingBarChangeListener(
                 new RatingBar.OnRatingBarChangeListener() {
-                    @Override public void onRatingChanged(RatingBar ratingBar, float valor, boolean fromUser) {
+                    @Override
+                    public void onRatingChanged(RatingBar ratingBar, float valor, boolean fromUser) {
                         lugar.setValoracion(valor);
                     }
                 });

@@ -92,7 +92,7 @@ public class MainActivity extends Activity {
 
                 .setNegativeButton("Cancelar", null)
                 .show();
-    }7
+    }
 
     public void mostrarPreferencias(View view){
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
