@@ -3,6 +3,7 @@ package org.example.mislugares;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +14,7 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.util.Date;
 
-public class VistaLugar extends ActionBarActivity {
+public class VistaLugar extends AppCompatActivity {
     private long id;
     private Lugar lugar;
 
