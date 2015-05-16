@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
 
     private Button bAcercaDe;
 
