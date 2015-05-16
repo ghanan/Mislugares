@@ -1,6 +1,8 @@
 package org.example.mislugares;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -10,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
@@ -73,10 +76,23 @@ public class MainActivity extends Activity {
     }
 
     public void lanzarVistaLugar(View view){
-        Intent i = new Intent(this, VistaLugar.class);
-        i.putExtra("id", (long)0);
-        startActivity(i);
-    }
+        final EditText entrada = new EditText(this);
+        entrada.setText("0");
+        new AlertDialog.Builder(this)
+                .setTitle("Selección de lugar")
+                .setMessage("indica su id:")
+                .setView(entrada)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        long id = Long.parseLong(entrada.getText().toString());
+                        Intent i = new Intent(MainActivity.this, VistaLugar.class);
+                        i.putExtra("id", id);
+                        startActivity(i);
+                    }})
+
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }7
 
     public void mostrarPreferencias(View view){
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
