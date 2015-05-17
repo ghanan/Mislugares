@@ -31,6 +31,10 @@ public class VistaLugar extends AppCompatActivity {
         id = extras.getLong("id", -1);
         lugar = Lugares.elemento((int) id);
 
+        actualizarVistas();
+    }
+
+    public void actualizarVistas() {
         TextView nombre = (TextView) findViewById(R.id.nombre);
         nombre.setText(lugar.getNombre());
 
@@ -93,7 +97,7 @@ public class VistaLugar extends AppCompatActivity {
             case R.id.accion_editar:
                 Intent i = new Intent(VistaLugar.this, EdicionLugar.class);
                 i.putExtra("id", this.id);
-                startActivity(i);
+                startActivityForResult(i, 1234);
                 return true;
             case R.id.accion_borrar:
                 new AlertDialog.Builder(this)
@@ -113,4 +117,11 @@ public class VistaLugar extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1234) {
+            actualizarVistas();
+            findViewById(R.id.scrollView1).invalidate();
+        }
+    }
 }
