@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -90,18 +91,22 @@ public class VistaLugar extends AppCompatActivity {
             case R.id.accion_llegar:
                 return true;
             case R.id.accion_editar:
+                Intent i = new Intent(VistaLugar.this, EdicionLugar.class);
+                i.putExtra("id", this.id);
+                startActivity(i);
                 return true;
             case R.id.accion_borrar:
                 new AlertDialog.Builder(this)
-                        .setTitle("Borrado de lugar")
-                        .setMessage("¿Está seguro de que quiere borrar este lugar?")
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                Lugares.borrar((int) id);
-                                finish();
-                            }})
-                        .setNegativeButton("Cancelar", null)
-                        .show();
+                            .setTitle("Borrado de lugar")
+                            .setMessage("¿Está seguro de que quiere borrar este lugar?")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    Lugares.borrar((int) id);
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton("Cancelar", null)
+                            .show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
