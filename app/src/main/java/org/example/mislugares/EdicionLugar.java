@@ -2,6 +2,8 @@ package org.example.mislugares;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -51,6 +53,29 @@ public class EdicionLugar extends AppCompatActivity {
         tipo.setAdapter(adaptador);
         tipo.setSelection(lugar.getTipo().ordinal());
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_edicion, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.edicion_guardar) {
+            lugar.setNombre(nombre.getText().toString());
+            lugar.setTipo(TipoLugar.values()[tipo.getSelectedItemPosition()]);
+            lugar.setDireccion(direccion.getText().toString());
+            lugar.setTelefono(Integer.parseInt(telefono.getText().toString()));
+            lugar.setUrl(url.getText().toString());
+            lugar.setComentario(comentario.getText().toString());
+//            finish();
+//            return true;
+        }
+        finish();
+        return true;
     }
 
 }
