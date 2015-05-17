@@ -2,6 +2,7 @@ package org.example.mislugares;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -42,21 +43,14 @@ public class EdicionLugar extends AppCompatActivity {
         comentario = (EditText) findViewById(R.id.comentario);
         comentario.setText(lugar.getComentario());
 
-//        TextView fecha = (TextView) findViewById(R.id.fecha);
-//        fecha.setText(DateFormat.getDateInstance().format(new Date(lugar.getFecha())));
-//
-//        TextView hora = (TextView) findViewById(R.id.hora);
-//        hora.setText(DateFormat.getTimeInstance().format(new Date(lugar.getFecha())));
-//
-//        RatingBar valoracion = (RatingBar) findViewById(R.id.valoracion);
-//        valoracion.setRating(lugar.getValoracion());
-//        valoracion.setOnRatingBarChangeListener(
-//                new RatingBar.OnRatingBarChangeListener() {
-//                    @Override
-//                    public void onRatingChanged(RatingBar ratingBar, float valor, boolean fromUser) {
-//                        lugar.setValoracion(valor);
-//                    }
-//                });
+        tipo = (Spinner) findViewById(R.id.tipo);
+        ArrayAdapter adaptador = new ArrayAdapter(this,
+                android.R.layout.simple_spinner_item, TipoLugar.getNombres());
+        adaptador.setDropDownViewResource(android.R.layout.
+                simple_spinner_dropdown_item);
+        tipo.setAdapter(adaptador);
+        tipo.setSelection(lugar.getTipo().ordinal());
+
     }
 
 }

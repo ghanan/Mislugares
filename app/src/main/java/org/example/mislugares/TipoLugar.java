@@ -24,4 +24,13 @@ public enum TipoLugar {
     public String getTexto() { return texto; }
 
     public int getRecurso() { return recurso; }
+
+    // para devolver los nombres
+    public static String[] getNombres() {
+        String[] resultado = new String[TipoLugar.values().length]; //array de N elementos
+        for(TipoLugar tipo : TipoLugar.values()) {
+            resultado[tipo.ordinal()] = tipo.texto;
+        }
+        return resultado;
+    }
 }
