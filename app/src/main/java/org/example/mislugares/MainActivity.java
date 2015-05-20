@@ -29,7 +29,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        adaptador = new ArrayAdapter(this, android.R.layout.simple_list_item_1, Lugares.listaNombres());
+        adaptador = new ArrayAdapter(this,
+                R.layout.elemento_lista,
+                R.id.nombre,
+                Lugares.listaNombres());
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adaptador);
 //        bAcercaDe =(Button) findViewById(R.id.Button03);
