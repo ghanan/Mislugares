@@ -12,25 +12,32 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private Button bAcercaDe;
+    public BaseAdapter adaptador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bAcercaDe =(Button) findViewById(R.id.Button03);
-        bAcercaDe.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                lanzarAcercaDe(null);
-            }
-        });
+        adaptador = new ArrayAdapter(this, android.R.layout.simple_list_item_1, Lugares.listaNombres());
+        ListView listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(adaptador);
+//        bAcercaDe =(Button) findViewById(R.id.Button03);
+//        bAcercaDe.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                lanzarAcercaDe(null);
+//            }
+//        });
     }
 
 
