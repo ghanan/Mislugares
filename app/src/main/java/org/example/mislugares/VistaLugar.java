@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -36,6 +37,8 @@ public class VistaLugar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vista_lugar);
 
+        //Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
+
         Bundle extras = getIntent().getExtras();
         id = extras.getLong("id", -1);
         lugar = Lugares.elemento((int) id);
@@ -44,6 +47,11 @@ public class VistaLugar extends AppCompatActivity {
 
         actualizarVistas();
     }
+
+//    @Override protected void onResume() {
+//        super.onResume();
+//        Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
+//    }
 
     public void actualizarVistas() {
         TextView nombre = (TextView) findViewById(R.id.nombre);
