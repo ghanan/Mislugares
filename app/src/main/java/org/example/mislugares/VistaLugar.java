@@ -195,4 +195,10 @@ public class VistaLugar extends AppCompatActivity {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uriFoto);
         startActivityForResult(intent, RESULTADO_FOTO);
     }
+
+    public void eliminarFoto(View view) {
+        lugar.setFoto(null);
+        ponerFoto(imageView, null);
+    }
+
 }
