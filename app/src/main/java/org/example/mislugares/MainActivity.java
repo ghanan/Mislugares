@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private Button bAcercaDe;
     public BaseAdapter adaptador;
+    public MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //            }
 //        });
         listView.setOnItemClickListener(this);
+        mp = MediaPlayer.create(this, R.raw.hola);
+//        mp.start();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mp.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mp.start();
     }
 
 
