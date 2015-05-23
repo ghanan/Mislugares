@@ -22,6 +22,10 @@ import java.util.Date;
 public class VistaLugar extends AppCompatActivity {
     private long id;
     private Lugar lugar;
+    private ImageView imageView;
+    final static int RESULTADO_EDITAR= 1;
+    final static int RESULTADO_GALERIA= 2;
+    final static int RESULTADO_FOTO= 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,8 @@ public class VistaLugar extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         id = extras.getLong("id", -1);
         lugar = Lugares.elemento((int) id);
+
+        imageView = (ImageView) findViewById(R.id.foto);
 
         actualizarVistas();
     }
@@ -80,6 +86,8 @@ public class VistaLugar extends AppCompatActivity {
                         lugar.setValoracion(valor);
                     }
                 });
+
+        ponerFoto(imageView, lugar.getFoto());
     }
 
     @Override
@@ -104,7 +112,7 @@ public class VistaLugar extends AppCompatActivity {
             case R.id.accion_editar:
                 Intent i = new Intent(VistaLugar.this, EdicionLugar.class);
                 i.putExtra("id", this.id);
-                startActivityForResult(i, 1234);
+                startActivityForResult(i, RESULTADO_EDITAR);
                 return true;
             case R.id.accion_borrar:
                 new AlertDialog.Builder(this)
@@ -126,9 +134,12 @@ public class VistaLugar extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1234) {
+        if (requestCode == RESULTADO_EDITAR) {
             actualizarVistas();
             findViewById(R.id.scrollView1).invalidate();
+        } else if (requestCode == RESULTADO_GALERIA && resultCode == Activity.RESULT_OK) {
+            lugar.setFoto(data.getDataString());
+            ponerFoto(imageView, lugar.getFoto());
         }
     }
 
@@ -154,4 +165,18 @@ public class VistaLugar extends AppCompatActivity {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(lugar.getUrl())));
     }
 
+    public void galeria(View view) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        startActivityForResult(intent, RESULTADO_GALERIA);
+    }
+
+    protected void ponerFoto(ImageView imageView, String uri) {
+        if (uri != null) {
+            imageView.setImageURI(Uri.parse(uri));
+        } else {
+            imageView.setImageBitmap(null);
+        }
+    }
 }
