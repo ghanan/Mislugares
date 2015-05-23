@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -20,7 +21,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private Button bAcercaDe;
     public BaseAdapter adaptador;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 //                lanzarAcercaDe(null);
 //            }
 //        });
+        listView.setOnItemClickListener(this);
     }
 
 
@@ -107,6 +109,13 @@ public class MainActivity extends AppCompatActivity {
         String s = "notificaciones: "+ pref.getBoolean("notificaciones",true)
                 +", distancia mínima: " + pref.getString("distancia","?");
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onItemClick(AdapterView parent, View vista, int posicion, long id) {
+        Intent i = new Intent(this, VistaLugar.class);
+        i.putExtra("id", id);
+        startActivity(i);
     }
 
     public void salir(View view){
