@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -16,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -23,6 +26,7 @@ public class VistaLugar extends AppCompatActivity {
     private long id;
     private Lugar lugar;
     private ImageView imageView;
+    private Uri uriFoto;
     final static int RESULTADO_EDITAR= 1;
     final static int RESULTADO_GALERIA= 2;
     final static int RESULTADO_FOTO= 3;
@@ -140,6 +144,9 @@ public class VistaLugar extends AppCompatActivity {
         } else if (requestCode == RESULTADO_GALERIA && resultCode == Activity.RESULT_OK) {
             lugar.setFoto(data.getDataString());
             ponerFoto(imageView, lugar.getFoto());
+        } else if(requestCode == RESULTADO_FOTO && resultCode == Activity.RESULT_OK && lugar!=null && uriFoto!=null) {
+            lugar.setFoto(uriFoto.toString());
+            ponerFoto(imageView, lugar.getFoto());
         }
     }
 
@@ -178,5 +185,14 @@ public class VistaLugar extends AppCompatActivity {
         } else {
             imageView.setImageBitmap(null);
         }
+    }
+
+    public void tomarFoto(View view) {
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        uriFoto = Uri.fromFile(
+            new File(Environment.getExternalStorageDirectory() + File.separator
+            + "img_" + (System.currentTimeMillis() / 1000) + ".jpg"));
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uriFoto);
+        startActivityForResult(intent, RESULTADO_FOTO);
     }
 }
