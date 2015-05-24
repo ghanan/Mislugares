@@ -70,4 +70,8 @@ public class Lugares {
         }
         return resultado;
     }
+
+    final static String TAG = "MisLugares";
+    protected static GeoPunto posicionActual = new GeoPunto(0,0);
+
 }

@@ -5,11 +5,15 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,11 +26,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, LocationListener {
 
     private Button bAcercaDe;
     public BaseAdapter adaptador;
     public MediaPlayer mp;
+    private LocationManager manejador;
+    private Location mejorLocaliz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         listView.setOnItemClickListener(this);
         mp = MediaPlayer.create(this, R.raw.hola);
 //        mp.start();
+
+        manejador = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if(manejador.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            actualizaMejorLocaliz(manejador.getLastKnownLocation(
+                    LocationManager.GPS_PROVIDER));
+        }
+        if(manejador.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            actualizaMejorLocaliz(manejador.getLastKnownLocation(
+                    LocationManager.NETWORK_PROVIDER));
+        }
     }
 
     @Override
@@ -56,8 +72,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onResume() {
         super.onResume();
         mp.start();
+        activarProveedores();
     }
 
+    @Override protected void onPause() {
+        super.onPause();
+        manejador.removeUpdates(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -123,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void mostrarPreferencias(View view){
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String s = "notificaciones: "+ pref.getBoolean("notificaciones",true)
-                +", distancia mínima: " + pref.getString("distancia","?");
+                +", distancia mínima: " + pref.getString("distancia", "?");
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
@@ -149,6 +170,51 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (estadoGuardado != null && mp != null) {
             int pos = estadoGuardado.getInt("posicion");
             mp.seekTo(pos);
+        }
+    }
+
+    private void activarProveedores() {
+        if(manejador.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            manejador.requestLocationUpdates(LocationManager.GPS_PROVIDER, 20 * 1000, 5, this);
+        }
+
+        if(manejador.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            manejador.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10 * 1000, 10, this);
+        }
+    }
+
+    @Override public void onLocationChanged(Location location) {
+        Log.d(Lugares.TAG, "Nueva localización: " + location);
+        actualizaMejorLocaliz(location);
+    }
+
+
+    @Override public void onProviderDisabled(String proveedor) {
+        Log.d(Lugares.TAG, "Se deshabilita: "+proveedor);
+        activarProveedores();
+    }
+
+    @Override    public void onProviderEnabled(String proveedor) {
+        Log.d(Lugares.TAG, "Se habilita: "+proveedor);
+        activarProveedores();
+    }
+
+    @Override
+    public void onStatusChanged(String proveedor, int estado, Bundle extras) {
+        Log.d(Lugares.TAG, "Cambia estado: " + proveedor);
+        activarProveedores();
+    }
+
+    private static final long DOS_MINUTOS = 2 * 60 * 1000;
+
+    private void actualizaMejorLocaliz(Location localiz) {
+        if (mejorLocaliz == null
+                || localiz.getAccuracy() < 2*mejorLocaliz.getAccuracy()
+                || localiz.getTime() - mejorLocaliz.getTime() > DOS_MINUTOS) {
+            Log.d(Lugares.TAG, "Nueva mejor localización");
+            mejorLocaliz = localiz;
+            Lugares.posicionActual.setLatitud(localiz.getLatitude());
+            Lugares.posicionActual.setLongitud(localiz.getLongitude());
         }
     }
 
